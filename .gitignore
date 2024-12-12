@@ -1,0 +1,6 @@
+# Ignorar el archivo .env
+.env
+
+# Ignorar el directorio .venv
+venv/
+
