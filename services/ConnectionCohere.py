@@ -29,6 +29,15 @@ class ConnectionCohere:
 
     def reset_collection(self):
         """Reinicia la colección de documentos"""
-        self.chroma.delete_collection("documents")
-        self.collection = self.chroma.create_collection("documents")
+        try:
+            if "documents" in self.chroma.list_collections():
+                self.chroma.delete_collection("documents")
+            self.collection = self.chroma.create_collection(
+                name="documents",
+                metadata={"hnsw:space": "cosine"}
+            )
+            print("Colección reiniciada exitosamente")
+        except Exception as e:
+            print(f"Error al reiniciar colección: {str(e)}")
+            raise
 

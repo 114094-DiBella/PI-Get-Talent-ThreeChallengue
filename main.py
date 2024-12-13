@@ -1,17 +1,15 @@
 from fastapi import FastAPI, HTTPException
-from typing import List, Dict
-
-from services.DocumentService import DocumentService
 from models import (
     DocumentInput, 
-    DocumentOutput, 
-    EmbeddingsInput, 
+    DocumentOutput,
+    EmbeddingsInput,
     EmbeddingsOutput,
     SearchInput,
     SearchOutput,
     QuestionInput,
     QuestionOutput
 )
+from services.DocumentService import DocumentService
 
 app = FastAPI(title="RAG System API")
 service = DocumentService()
@@ -30,7 +28,7 @@ async def upload_document(document: DocumentInput):
 @app.post("/generate-embeddings", response_model=EmbeddingsOutput)
 async def generate_embeddings(input: EmbeddingsInput):
     try:
-        result = await service.add_embeddings(document_id=input.document_id)
+        result = await service.add_embeddings(documentId=input.document_id)
         return result
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
@@ -52,5 +50,3 @@ async def ask_question(input: QuestionInput):
         return answer
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
-
